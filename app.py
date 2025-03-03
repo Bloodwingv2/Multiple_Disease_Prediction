@@ -1,15 +1,21 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 import joblib
 
-# Load models
+# Load models and scalers
 try:
-    model_diabetes = joblib.load('Models/diabetes_model.pkl')
-    model_heart = joblib.load('Models/heart_model.pkl')
-    model_parkinsons = joblib.load('Models/parkinsons_model.pkl')
+    model_diabetes = joblib.load("Models/diabetes_model.pkl")
+    model_heart = joblib.load("Models/heart_model.pkl")
+    model_parkinsons = joblib.load("Models/parkinsons_model.pkl")
+
+    scaler_diabetes = joblib.load("Models/diabetes_scaler.pkl")
+    scaler_heart = joblib.load("Models/heart_scaler.pkl")
+    scaler_parkinsons = joblib.load("Models/parkinsons_scaler.pkl")
+
     models_loaded = True
 except:
-    st.error("Error loading models. Make sure they are trained and saved properly.")
+    st.error("Error loading models or scalers. Make sure they are trained and saved properly.")
     models_loaded = False
 
 # Streamlit UI
@@ -36,8 +42,11 @@ if models_loaded:
         age = st.number_input("Age", min_value=1, max_value=120)
 
         if st.button("🔮 Predict Diabetes"):
-            input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, age]])
-            prediction = model_diabetes.predict(input_data)
+            input_data = pd.DataFrame([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, age]],
+                                      columns=["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI", "DiabetesPedigreeFunction", "Age"])
+
+            input_scaled = scaler_diabetes.transform(input_data)  # Apply scaling
+            prediction = model_diabetes.predict(input_scaled)
             st.success("✅ Diabetic" if prediction[0] == 1 else "❌ Non-Diabetic")
 
     elif disease_option == "Heart Disease":
@@ -59,8 +68,12 @@ if models_loaded:
         thal = st.number_input("Thalassemia (0-3)", min_value=0, max_value=3)
 
         if st.button("🔮 Predict Heart Disease"):
-            input_data = np.array([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
-            prediction = model_heart.predict(input_data)
+            input_data = pd.DataFrame([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]],
+                                      columns=["Age", "Sex", "ChestPainType", "RestingBP", "Cholesterol", "FastingBS", "RestingECG",
+                                               "MaxHR", "ExerciseAngina", "Oldpeak", "ST_Slope", "MajorVessels", "Thal"])
+
+            input_scaled = scaler_heart.transform(input_data)  # Apply scaling
+            prediction = model_heart.predict(input_scaled)
             st.success("✅ Heart Disease Detected" if prediction[0] == 1 else "❌ No Heart Disease")
 
     elif disease_option == "Parkinson's":
@@ -82,6 +95,10 @@ if models_loaded:
         ppe = st.number_input("PPE", min_value=0.0, max_value=1.0)
 
         if st.button("🔮 Predict Parkinson's"):
-            input_data = np.array([[fo, fhi, flo, jitter, shimmer, nhr, hnr, rpde, dfa, spread1, spread2, d2, ppe]])
-            prediction = model_parkinsons.predict(input_data)
+            input_data = pd.DataFrame([[fo, fhi, flo, jitter, shimmer, nhr, hnr, rpde, dfa, spread1, spread2, d2, ppe]],
+                                      columns=["MDVP:Fo(Hz)", "MDVP:Fhi(Hz)", "MDVP:Flo(Hz)", "MDVP:Jitter(%)", "MDVP:Shimmer",
+                                               "NHR", "HNR", "RPDE", "DFA", "Spread1", "Spread2", "D2", "PPE"])
+
+            input_scaled = scaler_parkinsons.transform(input_data)  # Apply scaling
+            prediction = model_parkinsons.predict(input_scaled)
             st.success("✅ Parkinson's Detected" if prediction[0] == 1 else "❌ No Parkinson's")
