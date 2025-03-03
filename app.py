@@ -31,7 +31,7 @@ if models_loaded:
     if disease_option == "Diabetes":
         st.subheader("Diabetes Prediction")
         
-        # User Inputs
+        # User Inputs for Diabetes
         pregnancies = st.number_input("Number of Pregnancies", min_value=0, max_value=20, step=1)
         glucose = st.number_input("Glucose Level (mg/dL)", min_value=0, max_value=200)
         blood_pressure = st.number_input("Blood Pressure (mm Hg)", min_value=0, max_value=150)
@@ -52,7 +52,7 @@ if models_loaded:
     elif disease_option == "Heart Disease":
         st.subheader("Heart Disease Prediction")
         
-        # User Inputs
+        # User Inputs for Heart Disease
         age = st.number_input("Age", min_value=1, max_value=120)
         sex = st.selectbox("Sex (0: Female, 1: Male)", [0, 1])
         cp = st.number_input("Chest Pain Type (0-3)", min_value=0, max_value=3)
@@ -78,43 +78,43 @@ if models_loaded:
     elif disease_option == "Parkinson's":
         st.subheader("Parkinson's Disease Prediction")
 
-    # User Inputs
-    fo = st.number_input("MDVP:Fo(Hz)", min_value=50.0, max_value=300.0)
-    fhi = st.number_input("MDVP:Fhi(Hz)", min_value=50.0, max_value=600.0)
-    flo = st.number_input("MDVP:Flo(Hz)", min_value=50.0, max_value=300.0)
-    jitter = st.number_input("MDVP:Jitter(%)", min_value=0.0, max_value=0.1)
-    jitter_abs = st.number_input("MDVP:Jitter(Abs)", min_value=0.0, max_value=0.1)
-    rap = st.number_input("MDVP:RAP", min_value=0.0, max_value=1.0)
-    ppq = st.number_input("MDVP:PPQ", min_value=0.0, max_value=1.0)
-    ddp = st.number_input("Jitter:DDP", min_value=0.0, max_value=1.0)
-    shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.1)
-    shimmer_db = st.number_input("MDVP:Shimmer(dB)", min_value=0.0, max_value=0.1)
-    apq3 = st.number_input("Shimmer:APQ3", min_value=0.0, max_value=1.0)
-    apq5 = st.number_input("Shimmer:APQ5", min_value=0.0, max_value=1.0)
-    apq = st.number_input("MDVP:APQ", min_value=0.0, max_value=1.0)
-    dda = st.number_input("Shimmer:DDA", min_value=0.0, max_value=1.0)
-    nhr = st.number_input("NHR", min_value=0.0, max_value=1.0)
-    hnr = st.number_input("HNR", min_value=0.0, max_value=40.0)
-    rpde = st.number_input("RPDE", min_value=0.0, max_value=1.0)
-    dfa = st.number_input("DFA", min_value=0.0, max_value=1.0)
-    spread1 = st.number_input("spread1", min_value=-10.0, max_value=0.0)
-    spread2 = st.number_input("spread2", min_value=0.0, max_value=1.0)
-    d2 = st.number_input("D2", min_value=0.0, max_value=3.0)
-    ppe = st.number_input("PPE", min_value=0.0, max_value=1.0)
+        # User Inputs for Parkinson's
+        fo = st.number_input("MDVP:Fo(Hz)", min_value=50.0, max_value=300.0)
+        fhi = st.number_input("MDVP:Fhi(Hz)", min_value=50.0, max_value=600.0)
+        flo = st.number_input("MDVP:Flo(Hz)", min_value=50.0, max_value=300.0)
+        jitter = st.number_input("MDVP:Jitter(%)", min_value=0.0, max_value=0.1)
+        jitter_abs = st.number_input("MDVP:Jitter(Abs)", min_value=0.0, max_value=0.1)
+        rap = st.number_input("MDVP:RAP", min_value=0.0, max_value=1.0)
+        ppq = st.number_input("MDVP:PPQ", min_value=0.0, max_value=1.0)
+        ddp = st.number_input("Jitter:DDP", min_value=0.0, max_value=1.0)
+        shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.1)
+        shimmer_db = st.number_input("MDVP:Shimmer(dB)", min_value=0.0, max_value=0.1)
+        apq3 = st.number_input("Shimmer:APQ3", min_value=0.0, max_value=1.0)
+        apq5 = st.number_input("Shimmer:APQ5", min_value=0.0, max_value=1.0)
+        apq = st.number_input("MDVP:APQ", min_value=0.0, max_value=1.0)
+        dda = st.number_input("Shimmer:DDA", min_value=0.0, max_value=1.0)
+        nhr = st.number_input("NHR", min_value=0.0, max_value=1.0)
+        hnr = st.number_input("HNR", min_value=0.0, max_value=40.0)
+        rpde = st.number_input("RPDE", min_value=0.0, max_value=1.0)
+        dfa = st.number_input("DFA", min_value=0.0, max_value=1.0)
+        spread1 = st.number_input("spread1", min_value=-10.0, max_value=0.0)
+        spread2 = st.number_input("spread2", min_value=0.0, max_value=1.0)
+        d2 = st.number_input("D2", min_value=0.0, max_value=3.0)
+        ppe = st.number_input("PPE", min_value=0.0, max_value=1.0)
 
-    if st.button("🔮 Predict Parkinson's"):
-        # Create DataFrame for user input
-        input_data = pd.DataFrame([[fo, fhi, flo, jitter, jitter_abs, rap, ppq, ddp, shimmer, shimmer_db, apq3, apq5, apq, dda, nhr, hnr, rpde, dfa, spread1, spread2, d2, ppe]],
-                                  columns=["MDVP:Fo(Hz)", "MDVP:Fhi(Hz)", "MDVP:Flo(Hz)", "MDVP:Jitter(%)", "MDVP:Jitter(Abs)", 
-                                           "MDVP:RAP", "MDVP:PPQ", "Jitter:DDP", "MDVP:Shimmer", "MDVP:Shimmer(dB)", 
-                                           "Shimmer:APQ3", "Shimmer:APQ5", "MDVP:APQ", "Shimmer:DDA", "NHR", "HNR", 
-                                           "RPDE", "DFA", "spread1", "spread2", "D2", "PPE"])
+        if st.button("🔮 Predict Parkinson's"):
+            # Create DataFrame for user input
+            input_data = pd.DataFrame([[fo, fhi, flo, jitter, jitter_abs, rap, ppq, ddp, shimmer, shimmer_db, apq3, apq5, apq, dda, nhr, hnr, rpde, dfa, spread1, spread2, d2, ppe]],
+                                      columns=["MDVP:Fo(Hz)", "MDVP:Fhi(Hz)", "MDVP:Flo(Hz)", "MDVP:Jitter(%)", "MDVP:Jitter(Abs)", 
+                                               "MDVP:RAP", "MDVP:PPQ", "Jitter:DDP", "MDVP:Shimmer", "MDVP:Shimmer(dB)", 
+                                               "Shimmer:APQ3", "Shimmer:APQ5", "MDVP:APQ", "Shimmer:DDA", "NHR", "HNR", 
+                                               "RPDE", "DFA", "spread1", "spread2", "D2", "PPE"])
 
-        # Apply scaling
-        input_scaled = scaler_parkinsons.transform(input_data)
+            # Apply scaling
+            input_scaled = scaler_parkinsons.transform(input_data)
 
-        # Make the prediction
-        prediction = model_parkinsons.predict(input_scaled)
+            # Make the prediction
+            prediction = model_parkinsons.predict(input_scaled)
 
-        # Show prediction result
-        st.success("✅ Parkinson's Detected" if prediction[0] == 1 else "❌ No Parkinson's")
+            # Show prediction result
+            st.success("✅ Parkinson's Detected" if prediction[0] == 1 else "❌ No Parkinson's")
