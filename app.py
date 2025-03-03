@@ -19,8 +19,8 @@ except:
     models_loaded = False
 
 # Streamlit UI
-st.title("🩺 Multiple Disease Prediction System")
-st.sidebar.title("🔍 Select a Disease Below")
+st.title("🩺 Multiple Disease Prediction")
+st.sidebar.title("🔍 Select a Disease")
 
 disease_option = st.sidebar.selectbox(
     "Choose a Disease:",
