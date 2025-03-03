@@ -81,4 +81,4 @@ if models_loaded:
                 prediction = model_heart.predict(input_scaled)
                 st.success("✅ Heart Disease Detected" if prediction[0] == 1 else "❌ No Heart Disease")
             except Exception as e:
-                st.error(f
+                st.error(f"Prediction error: {e}")
