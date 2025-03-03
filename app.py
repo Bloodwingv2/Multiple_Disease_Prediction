@@ -2,16 +2,11 @@ import streamlit as st
 import numpy as np
 import joblib
 
-# Load models and scalers
+# Load models
 try:
-    model_diabetes = joblib.load('diabetes_model.pkl')
-    model_heart = joblib.load('heart_model.pkl')
-    model_parkinsons = joblib.load('parkinsons_model.pkl')
-
-    scaler_diabetes = joblib.load('scaler_diabetes.pkl')
-    scaler_heart = joblib.load('scaler_heart.pkl')
-    scaler_parkinsons = joblib.load('scaler_parkinsons.pkl')
-
+    model_diabetes = joblib.load('Models/diabetes_model.pkl')
+    model_heart = joblib.load('Models/heart_model.pkl')
+    model_parkinsons = joblib.load('Models/parkinsons_model.pkl')
     models_loaded = True
 except:
     st.error("Error loading models. Make sure they are trained and saved properly.")
@@ -42,8 +37,7 @@ if models_loaded:
 
         if st.button("🔮 Predict Diabetes"):
             input_data = np.array([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, age]])
-            input_scaled = scaler_diabetes.transform(input_data)
-            prediction = model_diabetes.predict(input_scaled)
+            prediction = model_diabetes.predict(input_data)
             st.success("✅ Diabetic" if prediction[0] == 1 else "❌ Non-Diabetic")
 
     elif disease_option == "Heart Disease":
@@ -66,8 +60,7 @@ if models_loaded:
 
         if st.button("🔮 Predict Heart Disease"):
             input_data = np.array([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
-            input_scaled = scaler_heart.transform(input_data)
-            prediction = model_heart.predict(input_scaled)
+            prediction = model_heart.predict(input_data)
             st.success("✅ Heart Disease Detected" if prediction[0] == 1 else "❌ No Heart Disease")
 
     elif disease_option == "Parkinson's":
@@ -90,6 +83,5 @@ if models_loaded:
 
         if st.button("🔮 Predict Parkinson's"):
             input_data = np.array([[fo, fhi, flo, jitter, shimmer, nhr, hnr, rpde, dfa, spread1, spread2, d2, ppe]])
-            input_scaled = scaler_parkinsons.transform(input_data)
-            prediction = model_parkinsons.predict(input_scaled)
+            prediction = model_parkinsons.predict(input_data)
             st.success("✅ Parkinson's Detected" if prediction[0] == 1 else "❌ No Parkinson's")
