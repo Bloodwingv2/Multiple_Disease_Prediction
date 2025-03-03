@@ -3,22 +3,28 @@ import numpy as np
 import pandas as pd
 import joblib
 
-# Load models and scalers safely
-models_loaded = False
+# Load models and scalers
+models_loaded = True
 try:
     model_diabetes = joblib.load("Models/diabetes_model.pkl")
-    model_heart = joblib.load("Models/heart_model.pkl")
-    model_parkinsons = joblib.load("Models/parkinsons_model.pkl")
-
     scaler_diabetes = joblib.load("Models/diabetes_scaler.pkl")
-    scaler_heart = joblib.load("Models/heart_scaler.pkl")
-    scaler_parkinsons = joblib.load("Models/parkinsons_scaler.pkl")
+except Exception as e:
+    st.error(f"Error loading diabetes model or scaler: {e}")
+    models_loaded = False
 
-    models_loaded = True
-except FileNotFoundError as e:
-    st.error(f"Error loading models or scalers: {e}")
-except joblib.externals.joblib.exceptions as e:
-    st.error(f"Joblib error: {e}")
+try:
+    model_heart = joblib.load("Models/heart_model.pkl")
+    scaler_heart = joblib.load("Models/heart_scaler.pkl")
+except Exception as e:
+    st.error(f"Error loading heart disease model or scaler: {e}")
+    models_loaded = False
+
+try:
+    model_parkinsons = joblib.load("Models/parkinsons_model.pkl")
+    scaler_parkinsons = joblib.load("Models/parkinsons_scaler.pkl")
+except Exception as e:
+    st.error(f"Error loading Parkinson's model or scaler: {e}")
+    models_loaded = False
 
 # Streamlit UI
 st.title("🩺 Multiple Disease Prediction")
@@ -34,51 +40,73 @@ if models_loaded:
         st.subheader("Diabetes Prediction")
         
         # User Inputs
-        user_input = {
-            "Pregnancies": st.number_input("Number of Pregnancies", min_value=0, max_value=20, step=1),
-            "Glucose": st.number_input("Glucose Level (mg/dL)", min_value=0, max_value=300),
-            "BloodPressure": st.number_input("Blood Pressure (mm Hg)", min_value=0, max_value=180),
-            "SkinThickness": st.number_input("Skin Thickness (mm)", min_value=0, max_value=100),
-            "Insulin": st.number_input("Insulin Level (IU/mL)", min_value=0, max_value=900),
-            "BMI": st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=50.0),
-            "DiabetesPedigreeFunction": st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5),
-            "Age": st.number_input("Age", min_value=1, max_value=120)
-        }
-        
+        pregnancies = st.number_input("Number of Pregnancies", min_value=0, max_value=20, step=1)
+        glucose = st.number_input("Glucose Level (mg/dL)", min_value=0, max_value=200)
+        blood_pressure = st.number_input("Blood Pressure (mm Hg)", min_value=0, max_value=150)
+        skin_thickness = st.number_input("Skin Thickness (mm)", min_value=0, max_value=100)
+        insulin = st.number_input("Insulin Level (IU/mL)", min_value=0, max_value=900)
+        bmi = st.number_input("Body Mass Index (BMI)", min_value=0.0, max_value=50.0)
+        dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5)
+        age = st.number_input("Age", min_value=1, max_value=120)
+
         if st.button("🔮 Predict Diabetes"):
-            input_df = pd.DataFrame([list(user_input.values())], columns=user_input.keys())
-            try:
-                input_scaled = scaler_diabetes.transform(input_df)
-                prediction = model_diabetes.predict(input_scaled)
-                st.success("✅ Diabetic" if prediction[0] == 1 else "❌ Non-Diabetic")
-            except Exception as e:
-                st.error(f"Prediction error: {e}")
+            input_data = pd.DataFrame([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, age]],
+                                      columns=["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", "Insulin", "BMI", "DiabetesPedigreeFunction", "Age"])
+            
+            input_scaled = scaler_diabetes.transform(input_data)
+            prediction = model_diabetes.predict(input_scaled)
+            st.success("✅ Diabetic" if prediction[0] == 1 else "❌ Non-Diabetic")
     
     elif disease_option == "Heart Disease":
         st.subheader("Heart Disease Prediction")
         
         # User Inputs
-        user_input = {
-            "Age": st.number_input("Age", min_value=1, max_value=120),
-            "Sex": st.selectbox("Sex (0: Female, 1: Male)", [0, 1]),
-            "ChestPainType": st.number_input("Chest Pain Type (0-3)", min_value=0, max_value=3),
-            "RestingBP": st.number_input("Resting Blood Pressure (mm Hg)", min_value=80, max_value=200),
-            "Cholesterol": st.number_input("Cholesterol (mg/dL)", min_value=100, max_value=600),
-            "FastingBS": st.selectbox("Fasting Blood Sugar > 120 mg/dL (0: No, 1: Yes)", [0, 1]),
-            "RestingECG": st.number_input("Resting ECG (0-2)", min_value=0, max_value=2),
-            "MaxHR": st.number_input("Max Heart Rate Achieved", min_value=50, max_value=220),
-            "ExerciseAngina": st.selectbox("Exercise Induced Angina (0: No, 1: Yes)", [0, 1]),
-            "Oldpeak": st.number_input("ST Depression (0.0 - 5.0)", min_value=0.0, max_value=5.0),
-            "ST_Slope": st.number_input("Slope of ST Segment (0-2)", min_value=0, max_value=2),
-            "MajorVessels": st.number_input("Major Vessels Colored (0-4)", min_value=0, max_value=4),
-            "Thal": st.number_input("Thalassemia (0-3)", min_value=0, max_value=3)
-        }
-        
+        age = st.number_input("Age", min_value=1, max_value=120)
+        sex = st.selectbox("Sex (0: Female, 1: Male)", [0, 1])
+        cp = st.number_input("Chest Pain Type (0-3)", min_value=0, max_value=3)
+        trestbps = st.number_input("Resting Blood Pressure (mm Hg)", min_value=80, max_value=200)
+        chol = st.number_input("Cholesterol (mg/dL)", min_value=100, max_value=600)
+        fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dL (0: No, 1: Yes)", [0, 1])
+        restecg = st.number_input("Resting ECG (0-2)", min_value=0, max_value=2)
+        thalach = st.number_input("Max Heart Rate Achieved", min_value=50, max_value=220)
+        exang = st.selectbox("Exercise Induced Angina (0: No, 1: Yes)", [0, 1])
+        oldpeak = st.number_input("ST Depression (0.0 - 5.0)", min_value=0.0, max_value=5.0)
+        slope = st.number_input("Slope of ST Segment (0-2)", min_value=0, max_value=2)
+        ca = st.number_input("Major Vessels Colored (0-4)", min_value=0, max_value=4)
+        thal = st.number_input("Thalassemia (0-3)", min_value=0, max_value=3)
+
         if st.button("🔮 Predict Heart Disease"):
-            input_df = pd.DataFrame([list(user_input.values())], columns=user_input.keys())
-            try:
-                input_scaled = scaler_heart.transform(input_df)
-                prediction = model_heart.predict(input_scaled)
-                st.success("✅ Heart Disease Detected" if prediction[0] == 1 else "❌ No Heart Disease")
-            except Exception as e:
-                st.error(f"Prediction error: {e}")
+            input_data = pd.DataFrame([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]],
+                                      columns=["Age", "Sex", "ChestPainType", "RestingBP", "Cholesterol", "FastingBS", "RestingECG",
+                                               "MaxHR", "ExerciseAngina", "Oldpeak", "ST_Slope", "MajorVessels", "Thal"])
+            
+            input_scaled = scaler_heart.transform(input_data)
+            prediction = model_heart.predict(input_scaled)
+            st.success("✅ Heart Disease Detected" if prediction[0] == 1 else "❌ No Heart Disease")
+    
+    elif disease_option == "Parkinson's":
+        st.subheader("Parkinson's Disease Prediction")
+        
+        # User Inputs
+        fo = st.number_input("MDVP:Fo(Hz)", min_value=50.0, max_value=300.0)
+        fhi = st.number_input("MDVP:Fhi(Hz)", min_value=50.0, max_value=600.0)
+        flo = st.number_input("MDVP:Flo(Hz)", min_value=50.0, max_value=300.0)
+        jitter = st.number_input("MDVP:Jitter(%)", min_value=0.0, max_value=0.1)
+        shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.1)
+        nhr = st.number_input("NHR", min_value=0.0, max_value=1.0)
+        hnr = st.number_input("HNR", min_value=0.0, max_value=40.0)
+        rpde = st.number_input("RPDE", min_value=0.0, max_value=1.0)
+        dfa = st.number_input("DFA", min_value=0.0, max_value=1.0)
+        spread1 = st.number_input("spread1", min_value=-10.0, max_value=0.0)
+        spread2 = st.number_input("spread2", min_value=0.0, max_value=1.0)
+        d2 = st.number_input("D2", min_value=0.0, max_value=3.0)
+        ppe = st.number_input("PPE", min_value=0.0, max_value=1.0)
+
+        if st.button("🔮 Predict Parkinson's"):
+            input_data = pd.DataFrame([[fo, fhi, flo, jitter, shimmer, nhr, hnr, rpde, dfa, spread1, spread2, d2, ppe]],
+                                      columns=["MDVP:Fo(Hz)", "MDVP:Fhi(Hz)", "MDVP:Flo(Hz)", "MDVP:Jitter(%)", "MDVP:Shimmer",
+                                               "NHR", "HNR", "RPDE", "DFA", "Spread1", "Spread2", "D2", "PPE"])
+            
+            input_scaled = scaler_parkinsons.transform(input_data)
+            prediction = model_parkinsons.predict(input_scaled)
+            st.success("✅ Parkinson's Detected" if prediction[0] == 1 else "❌ No Parkinson's")
