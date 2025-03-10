@@ -81,12 +81,65 @@ unhealthy_heart = {
     "thal": 1             # Thalassemia - 1 (Fixed defect, common in heart conditions)
 }
 
+healthy_parkinsons = {
+    "fo": 200.0,         # Typical fundamental frequency
+    "fhi": 220.0,        # Slightly above average pitch
+    "flo": 180.0,        # Lower range of pitch
+    "jitter": 0.002,     # Healthy jitter is minimal
+    "jitter_abs": 0.00002,
+    "rap": 0.002,        # Lower RAP indicates stability
+    "ppq": 0.003,        # Minimal PPQ for healthy voice
+    "ddp": 0.006,        # Minimal DDP for healthy voice
+    "shimmer": 0.01,     # Low shimmer for stable amplitude
+    "shimmer_db": 0.1,   # Minimal shimmer in dB
+    "apq3": 0.005,       
+    "apq5": 0.007,       
+    "apq": 0.01,         
+    "dda": 0.01,         
+    "nhr": 0.01,         # Low NHR for clear voice
+    "hnr": 30.0,         # Higher HNR for clearer voice
+    "rpde": 0.4,         # Lower RPDE for smooth signal
+    "dfa": 0.6,          # DFA within stable range
+    "spread1": -5.0,     # Stable spread1
+    "spread2": 0.1,      # Stable spread2
+    "d2": 2.0,           # Healthy complexity level
+    "ppe": 0.05          # Minimal PPE for stable pitch
+}
+
+unhealthy_parkinsons = {
+    "fo": 150.0,         # Lower fundamental frequency
+    "fhi": 300.0,        # Higher pitch variability
+    "flo": 100.0,        # Lower pitch minimum
+    "jitter": 0.02,      # Elevated jitter
+    "jitter_abs": 0.001, 
+    "rap": 0.01,         
+    "ppq": 0.02,         
+    "ddp": 0.03,         
+    "shimmer": 0.05,     # Elevated shimmer
+    "shimmer_db": 0.3,   
+    "apq3": 0.02,        
+    "apq5": 0.03,        
+    "apq": 0.04,         
+    "dda": 0.04,         
+    "nhr": 0.2,          # Higher NHR due to noisier voice
+    "hnr": 15.0,         # Lower HNR indicating poor clarity
+    "rpde": 0.6,         # Higher RPDE indicates signal instability
+    "dfa": 0.8,          # Irregular DFA for unstable patterns
+    "spread1": -7.0,     # Spread1 deviates from healthy values
+    "spread2": 0.3,      
+    "d2": 2.8,           # Elevated complexity
+    "ppe": 0.3           # Higher PPE for unstable pitch
+}
+
 # Initialize session state for inputs
 if "inputs" not in st.session_state:
     st.session_state.inputs = healthy_man.copy()
 
 if "inputs2" not in st.session_state:
     st.session_state.inputs2 = healthy_heart.copy()
+
+if "inputs3" not in st.session_state:
+    st.session_state.inputs3 = healthy_parkinsons.copy()
 
 if models_loaded:
     if disease_option == "Diabetes":
@@ -171,29 +224,40 @@ if models_loaded:
     elif disease_option == "Parkinson's":
         st.subheader("Parkinson's Disease Prediction")
 
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("📋 Fill Healthy Values"):
+                st.session_state.inputs3 = healthy_parkinsons.copy()
+                st.rerun()  # Refresh UI
+
+        with col2:
+            if st.button("⚠️ Fill Parkinson-Risk Values"):
+                st.session_state.inputs3 = unhealthy_parkinsons.copy()
+                st.rerun()  # Refresh UI
+
         # User Inputs for Parkinson's
-        fo = st.number_input("MDVP:Fo(Hz)", min_value=50.0, max_value=300.0)
-        fhi = st.number_input("MDVP:Fhi(Hz)", min_value=50.0, max_value=600.0)
-        flo = st.number_input("MDVP:Flo(Hz)", min_value=50.0, max_value=300.0)
-        jitter = st.number_input("MDVP:Jitter(%)", min_value=0.0, max_value=0.1)
-        jitter_abs = st.number_input("MDVP:Jitter(Abs)", min_value=0.0, max_value=0.1)
-        rap = st.number_input("MDVP:RAP", min_value=0.0, max_value=1.0)
-        ppq = st.number_input("MDVP:PPQ", min_value=0.0, max_value=1.0)
-        ddp = st.number_input("Jitter:DDP", min_value=0.0, max_value=1.0)
-        shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.1)
-        shimmer_db = st.number_input("MDVP:Shimmer(dB)", min_value=0.0, max_value=0.1)
-        apq3 = st.number_input("Shimmer:APQ3", min_value=0.0, max_value=1.0)
-        apq5 = st.number_input("Shimmer:APQ5", min_value=0.0, max_value=1.0)
-        apq = st.number_input("MDVP:APQ", min_value=0.0, max_value=1.0)
-        dda = st.number_input("Shimmer:DDA", min_value=0.0, max_value=1.0)
-        nhr = st.number_input("NHR", min_value=0.0, max_value=1.0)
-        hnr = st.number_input("HNR", min_value=0.0, max_value=40.0)
-        rpde = st.number_input("RPDE", min_value=0.0, max_value=1.0)
-        dfa = st.number_input("DFA", min_value=0.0, max_value=1.0)
-        spread1 = st.number_input("spread1", min_value=-10.0, max_value=0.0)
-        spread2 = st.number_input("spread2", min_value=0.0, max_value=1.0)
-        d2 = st.number_input("D2", min_value=0.0, max_value=3.0)
-        ppe = st.number_input("PPE", min_value=0.0, max_value=1.0)
+        fo = st.number_input("MDVP:Fo(Hz)", min_value=50.0, max_value=300.0, value=st.session_state.inputs3["fo"])
+        fhi = st.number_input("MDVP:Fhi(Hz)", min_value=50.0, max_value=600.0, value=st.session_state.inputs3["fhi"])
+        flo = st.number_input("MDVP:Flo(Hz)", min_value=50.0, max_value=300.0, value=st.session_state.inputs3["flo"])
+        jitter = st.number_input("MDVP:Jitter(%)", min_value=0.0, max_value=0.1, value=st.session_state.inputs3["jitter"])
+        jitter_abs = st.number_input("MDVP:Jitter(Abs)", min_value=0.0, max_value=0.1, value=st.session_state.inputs3["jitter_abs"])
+        rap = st.number_input("MDVP:RAP", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["rap"])
+        ppq = st.number_input("MDVP:PPQ", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["ppq"])
+        ddp = st.number_input("Jitter:DDP", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["ddp"])
+        shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.1, value=st.session_state.inputs3["shimmer"])
+        shimmer_db = st.number_input("MDVP:Shimmer(dB)", min_value=0.0, max_value=0.1, value=st.session_state.inputs3["shimmer_db"])
+        apq3 = st.number_input("Shimmer:APQ3", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["apq3"])
+        apq5 = st.number_input("Shimmer:APQ5", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["apq5"])
+        apq = st.number_input("MDVP:APQ", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["apq"])
+        dda = st.number_input("Shimmer:DDA", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["dda"])
+        nhr = st.number_input("NHR", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["nhr"])
+        hnr = st.number_input("HNR", min_value=0.0, max_value=40.0, value=st.session_state.inputs3["hnr"])
+        rpde = st.number_input("RPDE", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["rpde"])
+        dfa = st.number_input("DFA", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["dfa"])
+        spread1 = st.number_input("spread1", min_value=-10.0, max_value=0.0, value=st.session_state.inputs3["spread1"])
+        spread2 = st.number_input("spread2", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["spread2"])
+        d2 = st.number_input("D2", min_value=0.0, max_value=3.0, value=st.session_state.inputs3["d2"])
+        ppe = st.number_input("PPE", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["ppe"])
 
         if st.button("🔮 Predict Parkinson's"):
             # Create DataFrame for user input
