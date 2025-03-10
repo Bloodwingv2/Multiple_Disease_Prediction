@@ -30,3 +30,4 @@ tenacity==9.0.0
 toml==0.10.2
 urllib3==2.3.0
 watchdog==6.0.0
+joblib==1.4.2
