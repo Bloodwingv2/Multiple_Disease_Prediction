@@ -66,7 +66,7 @@ The project follows a structured development pipeline:
 
 ### 📚 Datasets Used
 - **Pima Indians Diabetes Database** (Kaggle)
-- **Indian Liver Patient Records** (Kaggle)
+- **Indian parkinsons Patient Records** (Kaggle)
 - **Parkinson's Disease Dataset** (Kaggle)
 
 ### 📥 Loading the Datasets
@@ -75,14 +75,14 @@ import pandas as pd
 
 diabetes = pd.read_csv("data/diabetes.csv")
 heart = pd.read_csv("data/heart.csv")
-liver = pd.read_csv("data/liver.csv")
+parkinsons = pd.read_csv("data/parkinsons.csv")
 ```
 
 ### 💾 Saving Processed Data for Future Use
 ```python
 diabetes.to_csv("data/diabetes_cleaned.csv", index=False)
 heart.to_csv("data/heart_cleaned.csv", index=False)
-liver.to_csv("data/liver_cleaned.csv", index=False)
+parkinsons.to_csv("data/parkinsons_cleaned.csv", index=False)
 ```
 
 ---
