@@ -27,19 +27,66 @@ disease_option = st.sidebar.selectbox(
     ["Diabetes", "Heart Disease", "Parkinson's"]
 )
 
+healthy_man = {
+    "pregnancies": 1,
+    "glucose": 85,
+    "blood_pressure": 70,
+    "skin_thickness": 20,
+    "insulin": 80,
+    "bmi": 24.0,
+    "dpf": 0.5,
+    "age": 30
+}
+
+diabetic_man = {
+    "pregnancies": 5,
+    "glucose": 150,
+    "blood_pressure": 85,
+    "skin_thickness": 35,
+    "insulin": 200,
+    "bmi": 32.0,
+    "dpf": 1.2,
+    "age": 50
+}
+
+# Initialize session state for inputs
+if "inputs" not in st.session_state:
+    st.session_state.inputs = healthy_man.copy()
+
 if models_loaded:
     if disease_option == "Diabetes":
         st.subheader("Diabetes Prediction")
+
+        # Button to autofill default values
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("📋 Fill Healthy Values"):
+                st.session_state.inputs = healthy_man.copy()
+                st.rerun()  # Refresh UI
+
+        with col2:
+            if st.button("⚠️ Fill Diabetic Values"):
+                st.session_state.inputs = diabetic_man.copy()
+                st.rerun()  # Refresh UI
+
         
-        # User Inputs for Diabetes
-        pregnancies = st.number_input("Number of Pregnancies", min_value=0, max_value=20, step=1)
-        glucose = st.number_input("Glucose Level (mg/dL)", min_value=0, max_value=200)
-        blood_pressure = st.number_input("Blood Pressure (mm Hg)", min_value=0, max_value=150)
-        skin_thickness = st.number_input("Skin Thickness (mm)", min_value=0, max_value=100)
-        insulin = st.number_input("Insulin Level (IU/mL)", min_value=0, max_value=900)
-        bmi = st.number_input("Body Mass Index (BMI)", min_value=0.0, max_value=50.0)
-        dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5)
-        age = st.number_input("Age", min_value=1, max_value=120)
+                # Input fields with default values
+        pregnancies = st.number_input("Number of Pregnancies", min_value=0, max_value=20, step=1,
+                                    value=st.session_state.inputs["pregnancies"])
+        glucose = st.number_input("Glucose Level (mg/dL)", min_value=0, max_value=200,
+                                value=st.session_state.inputs["glucose"])
+        blood_pressure = st.number_input("Blood Pressure (mm Hg)", min_value=0, max_value=150,
+                                        value=st.session_state.inputs["blood_pressure"])
+        skin_thickness = st.number_input("Skin Thickness (mm)", min_value=0, max_value=100,
+                                        value=st.session_state.inputs["skin_thickness"])
+        insulin = st.number_input("Insulin Level (IU/mL)", min_value=0, max_value=900,
+                                value=st.session_state.inputs["insulin"])
+        bmi = st.number_input("Body Mass Index (BMI)", min_value=0.0, max_value=50.0,
+                            value=st.session_state.inputs["bmi"])
+        dpf = st.number_input("Diabetes Pedigree Function", min_value=0.0, max_value=2.5,
+                            value=st.session_state.inputs["dpf"])
+        age = st.number_input("Age", min_value=1, max_value=120,
+                            value=st.session_state.inputs["age"])
 
         if st.button("🔮 Predict Diabetes"):
             input_data = pd.DataFrame([[pregnancies, glucose, blood_pressure, skin_thickness, insulin, bmi, dpf, age]],
