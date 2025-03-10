@@ -2,6 +2,16 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
+import json
+
+# Load Json Files for accuracy and recall metrics etc
+
+with open('diabetes_metrics.json', 'r') as file:
+    metrics_diabetes = json.load(file)
+with open('heart disease_metrics.json', 'r') as file:
+    metrics_heart = json.load(file)
+with open("parkinson's_metrics.json", 'r') as file:
+    metrics_parkinson = json.load(file)
 
 # Load models and scalers
 try:
@@ -145,6 +155,14 @@ if models_loaded:
     if disease_option == "Diabetes":
         st.subheader("Diabetes Prediction")
 
+        # Display Model Accuracy, Precision, Recall, F1 Score fetched from json
+        st.markdown(
+            f"**🧪 Accuracy:** {metrics_diabetes['accuracy'] * 100:.2f}% | "
+            f"**🎯 Precision:** {metrics_diabetes['precision'] * 100:.2f}% | "
+            f"**📡 Recall:** {metrics_diabetes['recall'] * 100:.2f}% | "
+            f"**📊 F1 Score:** {metrics_diabetes['f1_score'] * 100:.2f}%"
+        )
+
         # Button to autofill default values
         col1, col2 = st.columns(2)
         with col1:
@@ -186,6 +204,13 @@ if models_loaded:
 
     elif disease_option == "Heart Disease":
         st.subheader("Heart Disease Prediction")
+
+        st.markdown(
+            f"**🧪 Accuracy:** {metrics_heart['accuracy'] * 100:.2f}% | "
+            f"**🎯 Precision:** {metrics_heart['precision'] * 100:.2f}% | "
+            f"**📡 Recall:** {metrics_heart['recall'] * 100:.2f}% | "
+            f"**📊 F1 Score:** {metrics_heart['f1_score'] * 100:.2f}%"
+        )
         
         col1, col2 = st.columns(2)
         with col1:
@@ -223,6 +248,13 @@ if models_loaded:
 
     elif disease_option == "Parkinson's":
         st.subheader("Parkinson's Disease Prediction")
+
+        st.markdown(
+            f"**🧪 Accuracy:** {metrics_parkinson['accuracy'] * 100:.2f}% | "
+            f"**🎯 Precision:** {metrics_parkinson['precision'] * 100:.2f}% | "
+            f"**📡 Recall:** {metrics_parkinson['recall'] * 100:.2f}% | "
+            f"**📊 F1 Score:** {metrics_parkinson['f1_score'] * 100:.2f}%"
+        )
 
         col1, col2 = st.columns(2)
         with col1:
