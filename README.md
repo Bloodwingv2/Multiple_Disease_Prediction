@@ -49,7 +49,7 @@ streamlit run app.py
 
 ---
 
-## 🗂️ Project Structure
+## 🗂️ Project Structure (Refer Jupyter Notebook and run each cell)
 
 The project follows a structured development pipeline:
 
