@@ -10,7 +10,8 @@ git clone https://github.com/your-repo/multiple-disease-prediction.git
 cd multiple-disease-prediction
 ```
 
-### ⚙️ Step 2: Create and Activate a Conda Environment (Skip this step if global packages don't bother you)
+### ⚙️ Step 2: Create and Activate a Conda Environment
+⚠️ Recommended: Creating a separate Conda environment helps isolate dependencies. However, you can skip this step if you're comfortable using global packages.
 ```bash
 conda create -n disease_prediction_env python=3.10
 conda activate disease_prediction_env
@@ -32,8 +33,8 @@ streamlit run app.py
 
 ## ✨ Key Enhancements
 
-- ➕ Added **"Healthy"** and **"Diabetic"** buttons for the **Heart Disease** section to simplify testing.
-- 🔽 Improved usability by integrating **dropdown menus** for binary (0/1) fields.
+- ➕ Added **"Healthy"** and **"Non-Healthy"** buttons for to simplify testing with pre-existing values.
+- 🔽 Improved usability by integrating **3 diseases** in one project one the left hand side.
 - 📊 Stored model performance metrics (accuracy, precision, etc.) in **JSON** format for easy data handling and streamlined updates.
 - 📝 Utilized **Markdown** in Streamlit for a clearer and more informative presentation of results.
 - 🧹 Enhanced code readability with well-structured comments and Markdown descriptions in Jupyter Notebook.
