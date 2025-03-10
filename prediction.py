@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import joblib
 import json
+import os
 
 # Load Json Files for accuracy and recall metrics etc
 
@@ -15,18 +16,19 @@ with open("parkinson's_metrics.json", 'r') as file:
 
 # Load models and scalers
 try:
-    model_diabetes = joblib.load("Models/diabetes_model.pkl")
-    model_heart = joblib.load("Models/heart_model.pkl")
-    model_parkinsons = joblib.load("Models/parkinsons_model.pkl")
+    model_diabetes = joblib.load(os.path.join("Models", "diabetes_model.pkl"))
+    model_heart = joblib.load(os.path.join("Models", "heart_model.pkl"))
+    model_parkinsons = joblib.load(os.path.join("Models", "parkinsons_model.pkl"))
 
-    scaler_diabetes = joblib.load("Models/diabetes_scaler.pkl")
-    scaler_heart = joblib.load("Models/heart_scaler.pkl")
-    scaler_parkinsons = joblib.load("Models/parkinsons_scaler.pkl")
+    scaler_diabetes = joblib.load(os.path.join("Models", "diabetes_scaler.pkl"))
+    scaler_heart = joblib.load(os.path.join("Models", "heart_scaler.pkl"))
+    scaler_parkinsons = joblib.load(os.path.join("Models", "parkinsons_scaler.pkl"))
 
     models_loaded = True
-except:
-    st.error("Error loading models or scalers. Make sure they are trained and saved properly.")
+except Exception as e:
+    st.error(f"Error loading models or scalers: {e}")
     models_loaded = False
+
 
 # Streamlit UI
 st.title("🩺 Multiple Disease Prediction")
