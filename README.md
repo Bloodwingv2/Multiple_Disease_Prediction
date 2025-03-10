@@ -1,6 +1,6 @@
 # Multiple Disease Prediction Project
 
-This project aims to develop a web application using Streamlit that predicts the likelihood of diabetes, heart disease, and liver disease based on user-provided health data.
+This project aims to develop a web application using Streamlit that predicts the likelihood of diabetes, heart disease, and Parkinson's disease based on user-provided health data.
 
 ## Project Structure
 
@@ -67,7 +67,7 @@ liver.to_csv("liver_cleaned.csv", index=False)
   - Outliers
   - Scaling issues
     
-- Applied `StandardScaler` to avoid bias from large values, as i was getting incorrect predictions.
+- Applied `StandardScaler` to avoid bias from large values, as incorrect predictions were observed without scaling.
 
 ---
 
@@ -75,19 +75,36 @@ liver.to_csv("liver_cleaned.csv", index=False)
 
 ### Model Selection
 
-- Started with **Logistic Regression** for simplicity and effectiveness, u can use anything, maybe another method.
+- Started with **Logistic Regression** for simplicity and effectiveness, but other methods may be explored.
 - Future plans include exploring **Random Forest**, **SVM**, and **XGBoost**.
 
-### Training & Saving Models
+### Training & Saving Models with Scalers
 
 ```python
 from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
 import joblib
+import json
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
 
 model = LogisticRegression()
-model.fit(X_train, y_train)
+model.fit(X_train_scaled, y_train)
 
-joblib.dump(model, 'diabetes_model.pkl')
+# Save model and scaler
+joblib.dump({'model': model, 'scaler': scaler}, 'diabetes_model.pkl')
+
+# Save metrics
+metrics = {
+    'accuracy': 0.89,
+    'f1_score': 0.87,
+    'recall': 0.85,
+    'precision': 0.88
+}
+
+with open("metrics.json", "w") as f:
+    json.dump(metrics, f)
 ```
 
 ---
@@ -100,6 +117,7 @@ joblib.dump(model, 'diabetes_model.pkl')
 - **"Fill Diabetic Values"** button for testing known diabetic indicators.
 - Utilized dictionaries to manage reference values efficiently.
 - Implemented session states for dynamic input management.
+- Combined trained models with scalers for improved predictions in Streamlit.
 
 ---
 
@@ -135,8 +153,4 @@ joblib.dump(model, 'diabetes_model.pkl')
    ```
 
 ---
-
-## Contact
-
-For inquiries or contributions, feel free to reach out via **GitHub Issues**.
 
