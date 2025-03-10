@@ -107,28 +107,28 @@ healthy_parkinsons = {
 }
 
 unhealthy_parkinsons = {
-    "fo": 150.0,         # Lower fundamental frequency
-    "fhi": 300.0,        # Higher pitch variability
-    "flo": 100.0,        # Lower pitch minimum
-    "jitter": 0.02,      # Elevated jitter
-    "jitter_abs": 0.001, 
-    "rap": 0.01,         
-    "ppq": 0.02,         
-    "ddp": 0.03,         
-    "shimmer": 0.05,     # Elevated shimmer
-    "shimmer_db": 0.3,   
-    "apq3": 0.02,        
-    "apq5": 0.03,        
-    "apq": 0.04,         
-    "dda": 0.04,         
-    "nhr": 0.2,          # Higher NHR due to noisier voice
-    "hnr": 15.0,         # Lower HNR indicating poor clarity
-    "rpde": 0.6,         # Higher RPDE indicates signal instability
-    "dfa": 0.8,          # Irregular DFA for unstable patterns
-    "spread1": -7.0,     # Spread1 deviates from healthy values
-    "spread2": 0.3,      
-    "d2": 2.8,           # Elevated complexity
-    "ppe": 0.3           # Higher PPE for unstable pitch
+     "fo": 150.0,
+    "fhi": 200.0,
+    "flo": 100.0,
+    "jitter": 0.005,
+    "jitter_abs": 0.0005,
+    "rap": 0.03,
+    "ppq": 0.02,
+    "ddp": 0.02,
+    "shimmer": 0.1,
+    "shimmer_db": 0.05,
+    "apq3": 0.02,
+    "apq5": 0.03,
+    "apq": 0.02,
+    "dda": 0.01,
+    "nhr": 0.02,
+    "hnr": 30.0,
+    "rpde": 0.4,
+    "dfa": 0.6,
+    "spread1": -5.0,
+    "spread2": 0.2,
+    "d2": 2.0,
+    "ppe": 0.1
 }
 
 # Initialize session state for inputs
@@ -244,8 +244,8 @@ if models_loaded:
         rap = st.number_input("MDVP:RAP", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["rap"])
         ppq = st.number_input("MDVP:PPQ", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["ppq"])
         ddp = st.number_input("Jitter:DDP", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["ddp"])
-        shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.1, value=st.session_state.inputs3["shimmer"])
-        shimmer_db = st.number_input("MDVP:Shimmer(dB)", min_value=0.0, max_value=0.1, value=st.session_state.inputs3["shimmer_db"])
+        shimmer = st.number_input("MDVP:Shimmer", min_value=0.0, max_value=0.5, value=st.session_state.inputs3["shimmer"])
+        shimmer_db = st.number_input("MDVP:Shimmer(dB)", min_value=0.0, max_value=0.5, value=st.session_state.inputs3["shimmer_db"])
         apq3 = st.number_input("Shimmer:APQ3", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["apq3"])
         apq5 = st.number_input("Shimmer:APQ5", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["apq5"])
         apq = st.number_input("MDVP:APQ", min_value=0.0, max_value=1.0, value=st.session_state.inputs3["apq"])
