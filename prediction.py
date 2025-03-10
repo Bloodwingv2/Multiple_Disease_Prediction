@@ -204,6 +204,10 @@ if models_loaded:
             prediction = model_diabetes.predict(input_scaled)
             st.success("✅ Diabetic" if prediction[0] == 1 else "❌ Non-Diabetic")
 
+        # Credit line 
+        st.markdown("---")  # Separator for clarity
+        st.markdown('<p style="text-align: center; font-size: 16px;">Developed by Mirang Bhandari 😊</p>', unsafe_allow_html=True)
+
     elif disease_option == "Heart Disease":
         st.subheader("Heart Disease Prediction")
 
@@ -248,6 +252,10 @@ if models_loaded:
             input_scaled = scaler_heart.transform(input_data)  # Apply scaling
             prediction = model_heart.predict(input_scaled)
             st.success("✅ Heart Disease Detected" if prediction[0] == 1 else "❌ No Heart Disease")
+
+        # Credit line 
+        st.markdown("---")  # Separator for clarity
+        st.markdown('<p style="text-align: center; font-size: 16px;">Developed by Mirang Bhandari 😊</p>', unsafe_allow_html=True)
 
     elif disease_option == "Parkinson's":
         st.subheader("Parkinson's Disease Prediction")
@@ -311,3 +319,7 @@ if models_loaded:
 
             # Show prediction result
             st.success("✅ Parkinson's Detected" if prediction[0] == 1 else "❌ No Parkinson's")
+
+        # Credit line 
+        st.markdown("---")  # Separator for clarity
+        st.markdown('<p style="text-align: center; font-size: 16px;">Developed by Mirang Bhandari 😊</p>', unsafe_allow_html=True)
