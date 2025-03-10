@@ -205,6 +205,7 @@ if models_loaded:
     elif disease_option == "Heart Disease":
         st.subheader("Heart Disease Prediction")
 
+        # Display Model Accuracy, Precision, Recall, F1 Score fetched from json
         st.markdown(
             f"**🧪 Accuracy:** {metrics_heart['accuracy'] * 100:.2f}% | "
             f"**🎯 Precision:** {metrics_heart['precision'] * 100:.2f}% | "
@@ -249,6 +250,7 @@ if models_loaded:
     elif disease_option == "Parkinson's":
         st.subheader("Parkinson's Disease Prediction")
 
+        # Display Model Accuracy, Precision, Recall, F1 Score fetched from json
         st.markdown(
             f"**🧪 Accuracy:** {metrics_parkinson['accuracy'] * 100:.2f}% | "
             f"**🎯 Precision:** {metrics_parkinson['precision'] * 100:.2f}% | "
