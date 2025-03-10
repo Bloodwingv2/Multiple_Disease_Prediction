@@ -49,9 +49,44 @@ diabetic_man = {
     "age": 50
 }
 
+healthy_heart = {
+    "age": 30,            # Age - Generally younger individuals are at lower risk
+    "sex": 1,             # Sex - Male (can vary depending on your dataset)
+    "cp": 0,              # Chest Pain Type - 0 (No typical angina)
+    "trestbps": 120,      # Resting Blood Pressure - Around 120 mm Hg (normal range)
+    "chol": 180,          # Cholesterol - Around 180 mg/dL (healthy range)
+    "fbs": 0,             # Fasting Blood Sugar > 120 mg/dL - 0 (Healthy fasting blood sugar)
+    "restecg": 0,         # Resting ECG - 0 (Normal ECG)
+    "thalach": 170,       # Max Heart Rate Achieved - High capacity for physical effort
+    "exang": 0,           # Exercise Induced Angina - 0 (No angina during exercise)
+    "oldpeak": 0.0,       # ST Depression - 0.0 (No depression)
+    "slope": 2,           # Slope of ST Segment - 2 (Upsloping, considered healthier)
+    "ca": 0,              # Major Vessels Colored - 0 (No major vessel blockages)
+    "thal": 2             # Thalassemia - 2 (Normal blood flow in stress test)
+}
+
+unhealthy_heart = {
+    "age": 65,            # Older age - Higher risk group
+    "sex": 1,             # Sex - Male (slightly higher risk statistically)
+    "cp": 2,              # Chest Pain Type - 2 (Atypical angina or discomfort)
+    "trestbps": 150,      # Resting Blood Pressure - Elevated (Hypertension Stage 1)
+    "chol": 280,          # Cholesterol - High cholesterol level
+    "fbs": 1,             # Fasting Blood Sugar > 120 mg/dL - Elevated
+    "restecg": 1,         # Resting ECG - Possible signs of abnormal heart function
+    "thalach": 120,       # Max Heart Rate Achieved - Lower than average due to poor heart function
+    "exang": 1,           # Exercise Induced Angina - Chest pain triggered by exertion
+    "oldpeak": 2.5,       # ST Depression - Moderate elevation indicating ischemia
+    "slope": 1,           # Slope of ST Segment - Flat slope (common in heart disease)
+    "ca": 2,              # Major Vessels Colored - 2 (Indicating partial blockages)
+    "thal": 1             # Thalassemia - 1 (Fixed defect, common in heart conditions)
+}
+
 # Initialize session state for inputs
 if "inputs" not in st.session_state:
     st.session_state.inputs = healthy_man.copy()
+
+if "inputs2" not in st.session_state:
+    st.session_state.inputs2 = healthy_heart.copy()
 
 if models_loaded:
     if disease_option == "Diabetes":
@@ -99,20 +134,31 @@ if models_loaded:
     elif disease_option == "Heart Disease":
         st.subheader("Heart Disease Prediction")
         
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("📋 Fill Healthy Values"):
+                st.session_state.inputs2 = healthy_heart.copy()
+                st.rerun()  # Refresh UI
+
+        with col2:
+            if st.button("⚠️ Fill Heart-Risk Values"):
+                st.session_state.inputs2 = unhealthy_heart.copy()
+                st.rerun()  # Refresh UI
+
         # User Inputs for Heart Disease
-        age = st.number_input("Age", min_value=1, max_value=120)
-        sex = st.selectbox("Sex (0: Female, 1: Male)", [0, 1])
-        cp = st.number_input("Chest Pain Type (0-3)", min_value=0, max_value=3)
-        trestbps = st.number_input("Resting Blood Pressure (mm Hg)", min_value=80, max_value=200)
-        chol = st.number_input("Cholesterol (mg/dL)", min_value=100, max_value=600)
-        fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dL (0: No, 1: Yes)", [0, 1])
-        restecg = st.number_input("Resting ECG (0-2)", min_value=0, max_value=2)
-        thalach = st.number_input("Max Heart Rate Achieved", min_value=50, max_value=220)
-        exang = st.selectbox("Exercise Induced Angina (0: No, 1: Yes)", [0, 1])
-        oldpeak = st.number_input("ST Depression (0.0 - 5.0)", min_value=0.0, max_value=5.0)
-        slope = st.number_input("Slope of ST Segment (0-2)", min_value=0, max_value=2)
-        ca = st.number_input("Major Vessels Colored (0-4)", min_value=0, max_value=4)
-        thal = st.number_input("Thalassemia (0-3)", min_value=0, max_value=3)
+        age = st.number_input("Age", min_value=1, max_value=120, value=st.session_state.inputs2["age"])
+        sex = st.selectbox("Sex (0: Female, 1: Male)", [0, 1], index=[0, 1].index(st.session_state.inputs2["sex"]))
+        cp = st.number_input("Chest Pain Type (0-3)", min_value=0, max_value=3, value=st.session_state.inputs2["cp"])
+        trestbps = st.number_input("Resting Blood Pressure (mm Hg)", min_value=80, max_value=200, value=st.session_state.inputs2["trestbps"])
+        chol = st.number_input("Cholesterol (mg/dL)", min_value=100, max_value=600, value=st.session_state.inputs2["chol"])
+        fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dL (0: No, 1: Yes)", [0, 1], index=[0, 1].index(st.session_state.inputs2["fbs"]))
+        restecg = st.number_input("Resting ECG (0-2)", min_value=0, max_value=2, value=st.session_state.inputs2["restecg"])
+        thalach = st.number_input("Max Heart Rate Achieved", min_value=50, max_value=220, value=st.session_state.inputs2["thalach"])
+        exang = st.selectbox("Exercise Induced Angina (0: No, 1: Yes)", [0, 1], index=[0, 1].index(st.session_state.inputs2["exang"]))
+        oldpeak = st.number_input("ST Depression (0.0 - 5.0)", min_value=0.0, max_value=5.0, value=st.session_state.inputs2["oldpeak"])
+        slope = st.number_input("Slope of ST Segment (0-2)", min_value=0, max_value=2, value=st.session_state.inputs2["slope"])
+        ca = st.number_input("Major Vessels Colored (0-4)", min_value=0, max_value=4, value=st.session_state.inputs2["ca"])
+        thal = st.number_input("Thalassemia (0-3)", min_value=0, max_value=3, value=st.session_state.inputs2["thal"])
 
         if st.button("🔮 Predict Heart Disease"):
             input_data = pd.DataFrame([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]],
