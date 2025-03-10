@@ -10,7 +10,7 @@ git clone https://github.com/your-repo/multiple-disease-prediction.git
 cd multiple-disease-prediction
 ```
 
-### ⚙️ Step 2: Create and Activate a Conda Environment
+### ⚙️ Step 2: Create and Activate a Conda Environment (Skip this step if global packages don't bother you)
 ```bash
 conda create -n disease_prediction_env python=3.10
 conda activate disease_prediction_env
