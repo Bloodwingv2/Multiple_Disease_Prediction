@@ -147,5 +147,3 @@ streamlit run app.py
 
 ---
 
-This updated structure streamlines both development and user interaction, ensuring a professional and polished experience. 🚀
-
