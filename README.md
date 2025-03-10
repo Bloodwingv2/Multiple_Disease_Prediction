@@ -2,7 +2,7 @@
 
 This project leverages **Streamlit** to create a web-based application that predicts the likelihood of **Diabetes**, **Heart Disease**, and **Parkinson's Disease** based on user-provided health data.  
 
-🟢 **Deployed at:** [Insert Streamlit Link Here]  
+🟢 **Deployed at:** [https://hiremeplsthx.streamlit.app/]  
 
 ## Features
 ✅ Predicts multiple diseases using trained ML models  
@@ -149,7 +149,7 @@ with open("metrics.json", "w") as f:
 streamlit run app.py
 ```
 
-Visit the live app here: [Insert Link]  
+Visit the live app here: [https://hiremeplsthx.streamlit.app/]  
 
 ---
 
